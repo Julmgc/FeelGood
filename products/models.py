@@ -1,6 +1,6 @@
 from django.db import models
 from django.core import validators
-from sita_se_bem.base_classes import GenericWithUUID
+from sinta_se_bem.base_classes import GenericWithUUID
 
 
 class Product(GenericWithUUID):
