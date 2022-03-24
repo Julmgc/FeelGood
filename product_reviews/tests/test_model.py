@@ -1,16 +1,15 @@
+import string
 from django.test import TestCase
+from sales.models import Sale
 from django.utils.timezone import now, timedelta
 
-from address.models import Address
-from orders.models import Order
+from product_reviews.models import ProductReview
 from users.models import User
-from sales.models import Sale
 from products.models import Product
-from payment.models import Payment
-from transactions.models import Transaction
+from address.models import Address
 
 
-class OrderModelTest(TestCase):
+class ProductReviewModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user_data = {
@@ -32,14 +31,6 @@ class OrderModelTest(TestCase):
             'contry': 'Brasil',
         }
 
-        cls.payment_data = {
-            'payment_method': 'credit',
-            'card_number': '12345678',
-            'cardholders_name': 'Teste de Model',
-            'card_expiring_date': '2100-01-01',
-            'cvv': 123,
-        }
-
         cls.sale_data = {
             'discount_percentage': 0.1,
             'initial_datetime': now().date(),
@@ -55,33 +46,35 @@ class OrderModelTest(TestCase):
             'expiration_date': '2030-01-01'
         }
 
-        cls.order_data = {
-            'quantity': 1,
-        }
 
         cls.address = Address.objects.create(**cls.address_data)
         cls.user = User.objects.create(**cls.user_data, address=cls.address)
         cls.sale = Sale.objects.create(**cls.sale_data)
         cls.product = Product.objects.create(**cls.product_data, sale=cls.sale)
-        cls.payment = Payment.objects.create(**cls.payment_data, customer=cls.user)
-        cls.transaction = Transaction.objects.create(payment=cls.payment, user=cls.user)
-        cls.order = Order.objects.create(
+
+       
+        cls.comment= "Good product",
+        cls.score= 3.9
+
+
+        
+        cls.product_review = ProductReview.objects.create(
+            user = cls.user,
             product=cls.product,
-            transaction=cls.transaction,
-            sale=cls.sale,
-            **cls.order_data
+            comment=cls.comment,
+            score=cls.score
         )
 
-        def test_order_fields(self):
-            self.assertIsInstance(self.order.quantity, int)
-            self.assertEqual(self.order.quantity, self.order_data['quantity'])
 
-            self.assertIsInstance(self.order.product, Product)
-            self.assertEqual(self.order.product.name, self.product_data['name'])
+        def test_product_review_fields(self):
+            self.assertIsInstance(self.product_review.comment, str)
+            self.assertEqual(self.product_review.comment, self.comment)
 
-            self.assertIsInstance(self.order.transaction, Transaction)
+            self.assertIsInstance(self.product_review.score, float)
+            self.assertEqual(self.product_review.score, self.score)
 
-            self.assertIsInstance(self.order.sale, Sale)
-            self.assertEqual(self.order.sale.discount_percentage,
-                             self.sale_data['discount_percentage'])
+            self.assertIsInstance(self.product_review.user, User)
+            self.assertEqual(self.product_review.user.email, self.user_data['email'])
 
+            self.assertIsInstance(self.product_review.product, Product)
+            self.assertEqual(self.product_review.product.name, self.product_data['name'])
