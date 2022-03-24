@@ -31,7 +31,7 @@ class PaymentModelTest(TestCase):
         cls.payment_method = 'credit'
         cls.card_number = '130120323123'
         cls.cardholders_name = 'User'
-        cls.card_expiration_date = '01/24'
+        cls.card_expiration_date = "2024-08-03"
         cls.cvv = '123'
         cls.is_active = True
       
