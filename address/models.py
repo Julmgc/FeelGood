@@ -1,8 +1,8 @@
 from django.db import models
-
+from sinta_se_bem.base_classes import GenericWithUUID
 # Create your models here.
 
-class Address(models.Model):
+class Address(GenericWithUUID):
     street = models.CharField(max_length=30)
     cep = models.CharField(max_length=9)
     house_number = models.CharField(max_length=5)
