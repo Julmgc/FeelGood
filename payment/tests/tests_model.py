@@ -43,7 +43,7 @@ class PaymentModelTest(TestCase):
             cardholders_name = cls.cardholders_name,
             card_expiration_date = cls.card_expiration_date,
             cvv = cls.cvv,
-            costumer = cls.user  
+            customer = cls.user  
         )   
 
     def test_payment_fields(self):
@@ -65,5 +65,5 @@ class PaymentModelTest(TestCase):
         self.assertIsInstance(self.payment.is_active, bool)
         self.assertEqual(self.payment.is_active, self.is_active)
 
-        self.assertIsInstance(self.payment.user, User)
-        self.assertEqual(self.payment.user.email, self.user_data['email'])
+        self.assertIsInstance(self.payment.customer, User)
+        self.assertEqual(self.payment.customer.email, self.user_data['email'])

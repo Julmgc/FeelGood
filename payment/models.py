@@ -9,5 +9,5 @@ class Payment(GenericWithUUID):
     card_expiration_date = models.DateField()
     cvv = models.CharField(max_length=20)
     is_active = models.BooleanField(default=True)
-    costumer_id = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='payment_id')
+    customer = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='payment_id')
 
