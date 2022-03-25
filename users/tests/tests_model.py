@@ -1,5 +1,6 @@
 from django.test import TestCase
 from users.models import User
+from address.models import Address
 
 
 class UserModelTest(TestCase):
@@ -25,7 +26,7 @@ class UserModelTest(TestCase):
             is_admin=cls.is_admin,
             is_seller=cls.is_seller,
             is_active=cls.is_active,
-            # address_id=cls.address
+            address_id=cls.address
         )
 
     def test_user_fields(self):
@@ -52,5 +53,5 @@ class UserModelTest(TestCase):
         self.assertIsInstance(self.user.is_active, bool)
         self.assertEqual(self.user.is_active, self.is_active)
 
-        # self.assertIsInstance(self.user.address_id, Address)
-        # self.assertEqual(self.user.address_id.street, self.street)
+        self.assertIsInstance(self.user.address_id, Address)
+        self.assertEqual(self.user.address_id.street, self.street)

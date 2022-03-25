@@ -59,8 +59,8 @@ class User(AbstractUser):
     is_admin = models.BooleanField()
     is_seller = models.BooleanField()
     is_active = models.BooleanField(default=True)
-    # address = models.OneToOneField(
-    #     'addresses.Address', on_delete=models.CASCADE, related_name="user", null=True)
+    address = models.OneToOneField(
+        'address.Address', on_delete=models.CASCADE, related_name="user", null=True)
     username = models.CharField(unique=False, null=True, max_length=255)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
