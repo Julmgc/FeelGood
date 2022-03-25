@@ -29,14 +29,14 @@ class OrderModelTest(TestCase):
             'city': 'Cidade',
             'district': 'Bairro',
             'state': 'RS',
-            'contry': 'Brasil',
+            'country': 'Brasil',
         }
 
         cls.payment_data = {
             'payment_method': 'credit',
             'card_number': '12345678',
             'cardholders_name': 'Teste de Model',
-            'card_expiring_date': '2100-01-01',
+            'card_expiration_date': '2100-01-01',
             'cvv': 123,
         }
 
