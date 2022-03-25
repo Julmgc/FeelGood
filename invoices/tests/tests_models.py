@@ -39,20 +39,21 @@ class InvoiceModelTest(TestCase):
             address=cls.address
         )
 
-        cls.payment_method = "debit",
-        cls.card_number = "1234567812345678",
-        cls.cardholders_name = "MARIANA F SOUZA",
-        cls.card_expiring_date = "2028-02-01",
-        cls.cvv = 200
+        cls.payment_method = 'credit'
+        cls.card_number = '130120323123'
+        cls.cardholders_name = 'User'
+        cls.card_expiration_date = "2024-08-03"
+        cls.cvv = '123'
+        cls.is_active = True
 
         cls.payment = Payment.objects.create(
-            payment_method=cls.payment_method,
-            card_number=cls.card_number,
-            cardholders_name=cls.cardholders_name,
-            card_expiring_date=cls.card_expiring_date,
-            cvv=cls.cvv,
-            customer=cls.user
-        )
+            payment_method = cls.payment_method,
+            card_number = cls.card_number,
+            cardholders_name = cls.cardholders_name,
+            card_expiration_date = cls.card_expiration_date,
+            cvv = cls.cvv,
+            customer = cls.user  
+        )   
 
         cls.amount = 10.5
 

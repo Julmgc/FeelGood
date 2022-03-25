@@ -8,11 +8,11 @@ class ProductModelTest(TestCase):
     def setUpTestData(cls) -> None:
         cls.discount_percentage = 0.05
         cls.is_active = True
-        cls.initial_datetime = "2022/04/01"
-        cls.final_datetime = "2022/04/02"
+        cls.initial_datetime = "2022-03-24T21:36:16.118950Z"
+        cls.final_datetime = "2022-04-24T21:36:16.118950Z"
        
 
-        cls.sale = Sale.objects.create_user(
+        cls.sale = Sale.objects.create(
            discount_percentage = cls.discount_percentage ,
            is_active = cls.is_active,
            initial_datetime = cls.initial_datetime ,

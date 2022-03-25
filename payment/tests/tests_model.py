@@ -16,6 +16,8 @@ class PaymentModelTest(TestCase):
             'last_name': 'Sobre Nome',
             'cpf': '12345678901',
             'birthdate': '2000-01-01',
+            'is_admin': True,
+            'is_seller': False
         }
 
         cls.address_data = {
@@ -25,7 +27,7 @@ class PaymentModelTest(TestCase):
             'city': 'Cidade',
             'district': 'Bairro',
             'state': 'RS',
-            'contry': 'Brasil',
+            'country': 'Brasil',
         }
 
         cls.payment_method = 'credit'

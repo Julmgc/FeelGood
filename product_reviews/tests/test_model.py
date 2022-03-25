@@ -28,7 +28,7 @@ class ProductReviewModelTest(TestCase):
             'city': 'Cidade',
             'district': 'Bairro',
             'state': 'RS',
-            'contry': 'Brasil',
+            'country': 'Brasil',
         }
 
         cls.sale_data = {
