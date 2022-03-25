@@ -1,12 +1,13 @@
+from trace import Trace
 from django.test import TestCase
-from users.models import User
-from transactions.models import Transaction
-from datetime import datetime
-from payment.models import Payment
 from address.models import Address
+from transactions.models import Transaction
+from users.models import User
+from payment.models import Payment
+from invoices.models import Invoice
 
 
-class TransactionModelTest(TestCase):
+class InvoiceModelTest(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         cls.is_admin = True
@@ -61,17 +62,16 @@ class TransactionModelTest(TestCase):
             payment=cls.payment
         )
 
-    def test_transaction_field(self):
-        self.assertIsInstance(self.product.description, str)
-        self.assertEqual(self.product.description, self.description)
+        cls.number = "12325214563222211144477788899966633355511142"
 
-        self.assertIsInstance(self.transaction.created_at, datetime)
+        cls.invoice = Invoice.objects.create(
+            number=cls.number,
+            transaction=cls.transaction
+        )
 
-        self.assertIsInstance(self.transaction.amount, float)
-        self.assertEqual(self.transaction.amount, self.amount)
+    def test_invoice_fields(self):
+        self.assertIsInstance(self.invoice.number, str)
+        self.assertEqual(self.invoice.number, self.number)
 
-        self.assertIsInstance(self.transaction.user, User)
-        self.assertEqual(self.transaction.user.email, self.email)
-
-        self.assertIsInstance(self.transaction.payment, Payment)
-        self.assertEqual(self.transaction.payment.cvv, self.cvv)
+        self.assertIsInstance(self.invoice.transaction, Transaction)
+        self.assertEqual(self.invoice.transaction.amount, self.amount)

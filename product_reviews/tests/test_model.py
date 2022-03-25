@@ -1,4 +1,4 @@
-import string
+
 from django.test import TestCase
 from sales.models import Sale
 from django.utils.timezone import now, timedelta
@@ -46,25 +46,20 @@ class ProductReviewModelTest(TestCase):
             'expiration_date': '2030-01-01'
         }
 
-
         cls.address = Address.objects.create(**cls.address_data)
         cls.user = User.objects.create(**cls.user_data, address=cls.address)
         cls.sale = Sale.objects.create(**cls.sale_data)
         cls.product = Product.objects.create(**cls.product_data, sale=cls.sale)
 
-       
-        cls.comment= "Good product",
-        cls.score= 3.9
+        cls.comment = "Good product",
+        cls.score = 3.9
 
-
-        
         cls.product_review = ProductReview.objects.create(
-            user = cls.user,
+            user=cls.user,
             product=cls.product,
             comment=cls.comment,
             score=cls.score
         )
-
 
         def test_product_review_fields(self):
             self.assertIsInstance(self.product_review.comment, str)
@@ -74,7 +69,9 @@ class ProductReviewModelTest(TestCase):
             self.assertEqual(self.product_review.score, self.score)
 
             self.assertIsInstance(self.product_review.user, User)
-            self.assertEqual(self.product_review.user.email, self.user_data['email'])
+            self.assertEqual(self.product_review.user.email,
+                             self.user_data['email'])
 
             self.assertIsInstance(self.product_review.product, Product)
-            self.assertEqual(self.product_review.product.name, self.product_data['name'])
+            self.assertEqual(self.product_review.product.name,
+                             self.product_data['name'])
