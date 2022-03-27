@@ -10,10 +10,11 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     card_number_info = serializers.SerializerMethodField()
     customer = UserSerializer(required=False)
+    card_number = serializers.CharField(write_only=True)
 
     class Meta:
         model = Payment
-        exclude = ['card_number']
+        fields = '__all__'
 
     def get_card_number_info(self, obj):
         return "*" * len(obj.card_number[:-4]) + obj.card_number[-4:]
