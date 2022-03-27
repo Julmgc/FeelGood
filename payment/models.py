@@ -1,6 +1,6 @@
 from django.db import models
 from sinta_se_bem.base_classes import GenericWithUUID
-# Create your models here.
+
 
 class Payment(GenericWithUUID):
     payment_method = models.CharField(max_length=20)
@@ -10,4 +10,3 @@ class Payment(GenericWithUUID):
     cvv = models.CharField(max_length=20)
     is_active = models.BooleanField(default=True)
     customer = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='payment_id')
-
