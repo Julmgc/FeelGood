@@ -3,7 +3,6 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Response, status
 from rest_framework.exceptions import ValidationError
-from django_filters.rest_framework import DjangoFilterBackend
 from payment.filters import IsOwnerFilterBackend
 
 from payment.models import Payment
