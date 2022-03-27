@@ -23,7 +23,9 @@ class ListCreatePayment(ListCreateAPIView):
         serialized.is_valid(raise_exception=True)
 
         check_in_db = self.queryset.filter(
-            customer_id=request.user.uuid, card_number=request.data['card_number'], payment_method=request.data['payment_method'])
+            customer_id=request.user.uuid,
+            card_number=request.data['card_number'],
+            payment_method=request.data['payment_method'], is_active=True)
         if check_in_db:
             raise ValidationError(
                 {'error': ["This card is already registered for this user"]})
