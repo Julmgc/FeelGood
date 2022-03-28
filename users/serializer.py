@@ -35,8 +35,8 @@ class UpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         uuid_parameter = self.context['view'].kwargs['user_id']
         user = self.context['request'].user
-        
-        if user.is_admin or user.uuid == uuid_parameter:
+      
+        if user.is_admin or str(user.uuid) == uuid_parameter:
             if  'password' in validated_data or 'is_active' in validated_data:
                 if 'password' in validated_data:
                     instance.set_password(validated_data['password'])
