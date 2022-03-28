@@ -16,3 +16,18 @@ class AdminUser(BasePermission):
             return False
 
         return False
+
+class AdminAndUser(BasePermission):
+    def has_permission(self, request, view):
+        
+
+        if request.method == 'PATCH':
+            return True
+        try:
+          
+            if request.user.is_admin:
+                return True
+        except AttributeError:
+            return False
+
+        return False
