@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from . models import User
-
-
+from django.forms import ValidationError
+from .exceptions import UserNotAcess
+from django.forms import ValidationError
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,14 +33,23 @@ class UpdateSerializer(serializers.ModelSerializer):
 
    
     def update(self, instance, validated_data):
-        if 'password' in validated_data:
-            instance.set_password(validated_data['password'])
+        uuid_parameter = self.context['view'].kwargs['user_id']
+        user = self.context['request'].user
+        
+        if user.is_admin or user.uuid == uuid_parameter:
+            if  'password' in validated_data or 'is_active' in validated_data:
+                if 'password' in validated_data:
+                    instance.set_password(validated_data['password'])
 
-        if 'is_active' in validated_data:
-            instance.is_active = validated_data.get('is_active', instance.is_active)    
-            
-        instance.save()
-        return instance
+                if 'is_active' in validated_data:
+                    instance.is_active = validated_data.get('is_active', instance.is_active)    
+                    
+                instance.save()
+                return instance
+            else:
+                raise ValidationError({'detail': 'No Permission.'})
+        else:
+            raise UserNotAcess()
     
 
   
