@@ -30,7 +30,7 @@ SECRET_KEY = getenv("SECRET_KEY") if getenv("SECRET_KEY") else 'django-insecure-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if getenv("PRODUCTION") else True
 
-ALLOWED_HOSTS = ['sinta-se-bem.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['sinta-se-bem.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
