@@ -1,3 +1,7 @@
+import dotenv
+import dj_database_url
+import os
+from dotenv import load_dotenv
 """
 Django settings for sinta_se_bem project.
 
@@ -11,6 +15,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_x)+21+5$8y^&s_d=pi()s79@07to36^q_3er0j4%txo_#))x9'
-
+SECRET_KEY = getenv("SECRET_KEY") if getenv("SECRET_KEY") else 'django-insecure-_x)+21+5$8y^&s_d=pi()s79@07to36^q_3er0j4%txo_#))x9'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if getenv("PRODUCTION") else True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sinta-se-bem.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -102,7 +107,13 @@ DATABASES = {
     }
 }
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
+if DATABASE_URL:
+    db_from_env = dj_database_url.config(
+        default=DATABASE_URL, conn_max_age=500, ssl_require=True)
+    DATABASES['default'].update(db_from_env)
+    DEBUG = False
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
