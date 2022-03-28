@@ -6,7 +6,7 @@ from sales.models import Sale
 class SaleModelTest(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
-        cls.discount_percentage = 0.05
+        cls.discount_percentage = 5.0
         cls.is_active = True
         cls.initial_datetime = datetime.strptime(
             '07/28/2022 18:54:55.099000', '%m/%d/%Y %H:%M:%S.%f').date()

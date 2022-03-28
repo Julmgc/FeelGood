@@ -23,7 +23,7 @@ class SaleIdView(RetrieveUpdateAPIView):
     queryset = Sale.objects.all()
     serializer_class = SaleGetByIdAndPatchSerializer
 
-    lookup_url_kwarg = 'product_id'
+    lookup_url_kwarg = 'sale_id'
 
 
 
