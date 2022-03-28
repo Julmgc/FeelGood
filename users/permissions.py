@@ -17,11 +17,11 @@ class AdminUser(BasePermission):
 
         return False
 
-class AdminSale(BasePermission):
+class AdminAndUser(BasePermission):
     def has_permission(self, request, view):
+        
 
-
-        if request.method == 'GET':
+        if request.method == 'PATCH':
             return True
         try:
           
