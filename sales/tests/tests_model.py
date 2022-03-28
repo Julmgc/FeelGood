@@ -1,17 +1,18 @@
 from datetime import date, datetime
 from django.test import TestCase
 from sales.models import Sale
-
+import pytz
 
 class SaleModelTest(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         cls.discount_percentage = 5.0
         cls.is_active = True
-        cls.initial_datetime = datetime.strptime(
-            '07/28/2022 18:54:55.099000', '%m/%d/%Y %H:%M:%S.%f').date()
-        cls.final_datetime = datetime.strptime(
-            '07/29/2022 18:54:55.099000', '%m/%d/%Y %H:%M:%S.%f').date()
+        cls.initial_datetime = datetime(
+            2013, 11, 20, 20, 8, 7, 127325, tzinfo=pytz.UTC)
+        cls.final_datetime = datetime(
+           2013, 11, 20, 20, 8, 7, 127325, tzinfo=pytz.UTC)
+
 
         cls.sale = Sale.objects.create(
             discount_percentage=cls.discount_percentage,
