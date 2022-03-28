@@ -4,6 +4,7 @@ from products.models import Product
 from course_link.models import CourseLink
 from category.models import Category
 from datetime import date, datetime
+import pytz
 
 
 class ProductModelTest(TestCase):
@@ -11,10 +12,10 @@ class ProductModelTest(TestCase):
     def setUpTestData(cls) -> None:
         cls.discount_percentage = 0.05
         cls.is_active = True
-        cls.initial_datetime = datetime.strptime(
-            '07/28/2022 18:54:55.099000', '%m/%d/%Y %H:%M:%S.%f').date()
-        cls.final_datetime = datetime.strptime(
-            '07/29/2022 18:54:55.099000', '%m/%d/%Y %H:%M:%S.%f').date()
+        cls.initial_datetime = datetime(
+            2013, 11, 20, 20, 8, 7, 127325, tzinfo=pytz.UTC)
+        cls.final_datetime = datetime(
+           2013, 11, 20, 20, 8, 7, 127325, tzinfo=pytz.UTC)
 
         cls.sale = Sale.objects.create(
             discount_percentage=cls.discount_percentage,
