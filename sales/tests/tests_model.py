@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from django.test import TestCase
 from sales.models import Sale
-
+from django.utils import timezone
 
 class SaleModelTest(TestCase):
     @classmethod
