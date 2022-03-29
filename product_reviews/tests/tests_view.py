@@ -116,3 +116,59 @@ class productReviewViewTest(APITestCase):
 
         self.assertEqual(response.status_code, 400)
 
+    def test_list_product_reviews_200(self):
+        product_review_data = {
+            "comment": "Good product",
+            "score": 4.0,
+            "product": self.product.data["id"]
+        }
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
+        response = self.client.post('/api/productReview/', product_review_data)
+
+        response= self.client.get("/api/productReview/", format="json")
+        output = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(output), 1)
+        
+    def test_return_product_review_by_id_200(self):
+
+        product_review_data = {
+            "comment": "Good product",
+            "score": 4.0,
+            "product": self.product.data["id"]
+        }
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
+        response = self.client.post('/api/productReview/', product_review_data)
+        print(response)
+        # id = response['id']
+        # response= self.client.get(f'/api/productReview/{id}/',format="json")
+        # output = response.json()
+        # self.assertEqual(response.status_code, 200)
+        # self.assertEqual(len(output), 1)
+       
+
+    
+    # def test_list_users_no_token(self):
+    #     response = self.client.get("/api/register/", format="json")
+    #     output = response.json()
+
+    #     self.assertEqual(response.status_code, 401)
+    #     self.assertEqual(output, {'detail': 'Authentication credentials were not provided.'})
+    
+    # def test_list_users_no_admin(self):
+    #     login_user_data= {
+    #         "email": "jose@bol.com",
+    #         "password": "12345678",
+    #     }
+
+    #     token = self.client.post("/api/login/",login_user_data, format="json").json()["token"]
+    #     self.client.credentials(HTTP_AUTHORIZATION="Token " + token)
+
+    #     response = self.client.get("/api/register/", format="json")
+    #     output = response.json()
+
+    #     self.assertEqual(response.status_code, 403)
+    #     self.assertEqual(output, {'detail': 'You do not have permission to perform this action.'})
+

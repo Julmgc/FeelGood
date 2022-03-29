@@ -24,7 +24,7 @@ urlpatterns = [
     path('api/', include('course_link.urls')),
     path('api/', include('sales.urls')),
     path('api/', include('address.urls')),
+    path('api/',include('orders.urls')),
     path('api/', include('product_reviews.urls')),
-
 
 ]

@@ -11,26 +11,22 @@ class ProductReviewSerializer(serializers.ModelSerializer):
         model = ProductReview
         fields = ['id', 'comment', 'score', 'user', 'product']
         extra_kwargs = {
-            'name': {
-                'validators': []
+            'product': {
+                'required': True
             }
         }
         depth = 1
 
-    # def validate(self, attrs):
-
-    #     if not "product" or not "score" or not "comment" in attrs:
-
-    #         raise ValidationError({"product, score, comment":"This fields are required."})
-
-    #     return super().validate(attrs)
-
     def create(self,validated_data):
         data_validated = {"comment": validated_data["comment"], "score": validated_data["score"]}
-        review_product = self.context['view'].request.data.get('product', str)
-        get_product = Product.objects.get(id=review_product)
-        productReview = ProductReview.objects.create(**data_validated,user=self.context['request'].user, product=get_product)
-        return productReview
+        review_product = self.context['view'].request.data.get('product', None)
+        if review_product is not None:
+            get_product = Product.objects.get(id=review_product)
+        
+            productReview = ProductReview.objects.create(**data_validated,user=self.context['request'].user, product=get_product)
+            return productReview
+        else:
+             raise ValidationError({"product, score, comment":"This fields are required."})
 
 class ProductReviewGetByIdAndPatchSerializer(serializers.ModelSerializer):
     class Meta:
