@@ -14,7 +14,6 @@ class ListCreateProduct(ListCreateAPIView):
     serializer_class = ProductSerializer
 
     filter_backends = [DjangoFilterBackend]
-    # filter_fields = ['categories', 'name']
     filter_class = ProductFilter
 
     authentication_classes = [TokenAuthentication]
