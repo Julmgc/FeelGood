@@ -1,6 +1,8 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from products.filters import ProductFilter
 
 from products.models import Product
 from products.permissions import AdminPermission, GetPermission
@@ -10,6 +12,10 @@ from products.serializers import ProductSerializer
 class ListCreateProduct(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    filter_backends = [DjangoFilterBackend]
+    # filter_fields = ['categories', 'name']
+    filter_class = ProductFilter
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated | GetPermission, AdminPermission]
