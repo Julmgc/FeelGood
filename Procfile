@@ -1,0 +1,1 @@
+web: gunicorn sinta_se_bem.wsgi 
