@@ -34,8 +34,6 @@ class CourseAndProdut(APIView):
             product_id = request.data['product_id']
             product = Product.objects.get(id=product_id)
 
-            product.course_links.add(course)
-            product.save()
 
             return Response(ProductSerializer(product).data, status=status.HTTP_200_OK)
         except (CourseLink.DoesNotExist, Product.DoesNotExist):
