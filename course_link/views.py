@@ -27,7 +27,7 @@ class CourseLinkUpdateAndListOne(RetrieveUpdateAPIView):
     lookup_url_kwarg = 'course_id'
 
 
-class CourseAndProduto(APIView):
+class CourseAndProdut(APIView):
     def post(self, request, course_id=''):
         try:
             course = CourseLink.objects.get(id=course_id)
