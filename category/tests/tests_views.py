@@ -1,60 +1,58 @@
 from rest_framework.test import APITestCase
-
+from users.models import User
 class CategoryViewTest(APITestCase):
+    token_admin: str
+    category_data = {
+            "name": "Perfume"
+    }
     def setUp(self) -> None:
-        category_data = {
-            "name": "Perfume"
+        user_data = {
+            "first_name": "Jose",
+            "last_name": "Gaspar",
+            "is_seller": False,
+            'cpf': '12345678912',
+            'birthdate': '30/11/1987'
         }
+        admin_data = {
+            "email": "adm@mail.com",
+            "password": "1234",
+            "is_admin": True
+        }
+        User.objects.create_user(**admin_data, **user_data)
 
-        response = self.client.post('/api/category/', category_data, format='json')
-    
+        self.token_admin = self.client.post('/api/login/', admin_data, format="json").json()["token"]
+
     def test_create_new_category_success_201(self):
-        category_data = {
-            "name": "Perfume"
-        }
+       
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
         
-        response = self.client.post('/api/category/', category_data, format='json')
+        response = self.client.post('/api/category/', self.category_data, format='json')
         output = response.json()
 
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(output['name'], category_data['name'])
+        self.assertEqual(output['name'], self.category_data['name'])
         self.assertIn('id', output)
     
     def test_create_new_category_bad_request_400(self):
-        category_data = {
-            
-        }
-        response = self.client.post('/api/category/', category_data, format='json')
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
+       
+        response = self.client.post('/api/category/', {}, format='json')
         output = response.json()
 
         self.assertEqual(response.status_code, 400)
         self.assertIn(output, 'name')
 
     def test_list_categories_200(self):
-        user_data_admin ={
-            "email": "jo@bol.com",
-            "password": "12345678",
-            "first_name": "Jose",
-            "last_name": "Gaspar",
-            "is_seller": False,
-            "is_admin": False,
-            'cpf':'12345678913',
-            'birthdate':'30/11/1986'
-        }
-        response = self.client.post('/api/register/',user_data_admin, format='json').json()
-        
-        login_admin = {
-            "email": "jo@bol.com",
-            "password": "12345678"
-            }
-        token = self.client.post("/api/login/",login_admin, format="json").json()["token"]
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + token)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
+     
         
         response= self.client.get("/api/category/", format="json")
         
         self.assertEqual(response.status_code, 200)
 
     def test_list_categories_with_no_token_401(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
+       
         response = self.client.get("/api/category/", format="json")
         output = response.json()
 
@@ -62,11 +60,10 @@ class CategoryViewTest(APITestCase):
         self.assertEqual(output, {'detail': 'Authentication credentials were not provided.'})
 
     def get_only_one_category_200(self):
-        category_data = {
-            "name": "Perfume"
-        }
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
+
         
-        response = self.client.post('/api/category/', category_data, format='json')
+        response = self.client.post('/api/category/', self.category_data, format='json')
         output = response.json()
 
         response = self.client.get(f'/api/category/{output["id"]}')
@@ -76,5 +73,4 @@ class CategoryViewTest(APITestCase):
         self.assertEqual(output['name'], get['name'])
         self.assertEqual(output['id'], get['id'])
     
-    def get_non_existing_category_404(self):
-        ...
+   
