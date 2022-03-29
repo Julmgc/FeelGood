@@ -3,6 +3,7 @@ from django.test import TestCase
 from sales.models import Sale
 import pytz
 
+
 class SaleModelTest(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
@@ -12,7 +13,6 @@ class SaleModelTest(TestCase):
             2013, 11, 20, 20, 8, 7, 127325, tzinfo=pytz.UTC)
         cls.final_datetime = datetime(
            2013, 11, 20, 20, 8, 7, 127325, tzinfo=pytz.UTC)
-
 
         cls.sale = Sale.objects.create(
             discount_percentage=cls.discount_percentage,
