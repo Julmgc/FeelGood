@@ -16,3 +16,4 @@ class Product(GenericWithUUID):
         'course_link.CourseLink', related_name='course_links')
     categories = models.ManyToManyField(
         'category.Category', related_name='categories')
+    is_active = models.BooleanField(default=True)
