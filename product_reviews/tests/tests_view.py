@@ -61,7 +61,6 @@ class productReviewViewTest(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
         created_product =  self.client.post('/api/products/', product_data, format="json")
         self.product = self.client.get('/api/products/'+created_product.data["id"]+"/", format="json")
-        print("PRODUCT", self.product.data["id"])
         
     def test_create_product_review_201(self):
         product_review_data = {
@@ -72,7 +71,6 @@ class productReviewViewTest(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
         response = self.client.post('/api/productReview/', product_review_data)
-
         self.assertEqual(response.status_code, 201)
         self.assertIn("id", response.data)
         self.assertIn("comment", response.data)
@@ -110,12 +108,11 @@ class productReviewViewTest(APITestCase):
         data = {
             "comment": "Good product",
             "score": 4.0,
-            "user": self.create_client,
-            "product": self.product.data["id"]
+            "user": self.create_client
         }
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
         response = self.client.post('/api/productReview/', data)
-        print(response)
 
         self.assertEqual(response.status_code, 400)
+
