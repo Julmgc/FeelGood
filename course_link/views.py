@@ -28,11 +28,11 @@ class CourseLinkUpdateAndListOne(RetrieveUpdateAPIView):
 
 
 class CourseAndProdut(APIView):
-    def post(self, request, course_id=''):
+    def post(self, request, courseId=''):
         try:
-            course = CourseLink.objects.get(id=course_id)
+            course = CourseLink.objects.get(id=courseId)
             product_id = request.data['product_id']
-            product = Product.objects.get(product_id)
+            product = Product.objects.get(id=product_id)
 
             product.course_links.add(course)
             product.save()
