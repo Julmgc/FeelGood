@@ -2,8 +2,8 @@ from rest_framework import serializers
 from .models import Invoice
 
 
-class InvoiceSerializer(serializers.Modelserializer):
+class InvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
-        fields = ['id', ]
+        fields = ['id', 'number', 'transaction']
         depth = 1
