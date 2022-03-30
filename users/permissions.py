@@ -46,3 +46,18 @@ class AdminSale(BasePermission):
             return False
 
         return False
+
+class ClientOrSellerProductReview(BasePermission):
+    def has_permission(self, request, view):
+
+
+        if request.method == 'GET':
+            return True
+        try:
+          
+            if not request.user.is_admin:
+                return True
+        except AttributeError:
+            return False
+
+        return False
