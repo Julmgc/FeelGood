@@ -10,3 +10,4 @@ class Order(GenericWithUUID):
     product = models.ForeignKey('products.Product', related_name='orders', on_delete=models.PROTECT)
     transaction = models.ForeignKey('transactions.Transaction', related_name='orders', on_delete=models.PROTECT)
     sale = models.ForeignKey('sales.Sale', related_name='orders', on_delete=models.PROTECT, null=True)
+    customer = models.ForeignKey('users.User', related_name='orders', on_delete=models.PROTECT, null=True)

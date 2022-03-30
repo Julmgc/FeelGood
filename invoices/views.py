@@ -23,11 +23,4 @@ class InvoiceGetOneView(RetrieveAPIView):
     lookup_url_kwarg = 'invoice_id'
 
 
-class InvoiceGetOneTransactionView(RetrieveAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, AdminAndUser]
 
-    queryset = Invoice.objects.all()
-    serializer_class = InvoiceSerializer
-    lookup_url_kwarg = 'transaction_id'
-    lookup_field = 'transaction_id'

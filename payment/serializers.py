@@ -4,7 +4,8 @@ from rest_framework.exceptions import ValidationError
 
 from payment.models import Payment
 from users.serializer import UserSerializer
-
+from transactions.exceptions import TransactionError
+from django.utils.timezone import now
 
 class PaymentSerializer(serializers.ModelSerializer):
 
@@ -25,4 +26,15 @@ class PaymentSerializer(serializers.ModelSerializer):
         if (expiring_date - now().date()).days < 0:
             raise ValidationError({"error": ['This card is expired']})
 
+        return super().validate(attrs)
+
+class PaymentTransactionSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    def validate(self, attrs):
+        try:
+            payment = Payment.objects.get(id=attrs["id"])
+        except Payment.DoesNotExist:
+            raise TransactionError({"detail": "Card was not found"}, code=404)
+        if payment.card_expiration_date < now().date():
+            raise TransactionError({"detail": "Card expired"}, code=400)
         return super().validate(attrs)
