@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from transactions.exceptions import TransactionError
 from category.models import Category
 from course_link.models import CourseLink
 from products.models import Product
@@ -82,3 +82,22 @@ class ProductSerializer(serializers.ModelSerializer):
             instance.categories.add(new_category)
 
         return super().update(instance, validated_data)
+
+
+class ProductsTransactionsSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    quantity = serializers.IntegerField(min_value=0)
+
+    def validate(self, attrs):
+        try:
+            product = Product.objects.get(id=attrs["id"])
+
+
+        except Product.DoesNotExist:
+            raise TransactionError({"detail": "Product not found"}, code=404)
+
+        if product.quantity < attrs["quantity"]:
+            raise TransactionError({"detail": f'Product {product.name} quantity is not enough'}, code=400)
+        
+
+        return super().validate(attrs)
