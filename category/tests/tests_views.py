@@ -40,7 +40,7 @@ class CategoryViewTest(APITestCase):
         output = response.json()
 
         self.assertEqual(response.status_code, 400)
-        self.assertIn(output, 'name')
+        self.assertIn('name', output)
 
     def test_list_categories_200(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
@@ -51,13 +51,13 @@ class CategoryViewTest(APITestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_list_categories_with_no_token_401(self):
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " )
        
         response = self.client.get("/api/category/", format="json")
         output = response.json()
 
         self.assertEqual(response.status_code, 401)
-        self.assertEqual(output, {'detail': 'Authentication credentials were not provided.'})
+        self.assertEqual(output, {'detail': 'Invalid token header. No credentials provided.'})
 
     def get_only_one_category_200(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)

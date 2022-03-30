@@ -1,10 +1,5 @@
-from itertools import product
 from rest_framework.test import APITestCase
-from sales.models import Sale
 from users.models import User
-from products.models import Product
-from datetime import  datetime
-import pytz
 
 class productReviewViewTest(APITestCase):
     token_seller: str
@@ -61,114 +56,83 @@ class productReviewViewTest(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
         created_product =  self.client.post('/api/products/', product_data, format="json")
         self.product = self.client.get('/api/products/'+created_product.data["id"]+"/", format="json")
-        
-    def test_create_product_review_201(self):
-        product_review_data = {
+        self.product_review_data = {
             "comment": "Good product",
             "score": 4.0,
             "product": self.product.data["id"]
         }
 
+    def test_create_product_review_201(self):
+
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
-        response = self.client.post('/api/productReview/', product_review_data)
+        response = self.client.post('/api/productReview/', self.product_review_data)
         self.assertEqual(response.status_code, 201)
         self.assertIn("id", response.data)
         self.assertIn("comment", response.data)
-        self.assertIn("score", response.data)
-    
+        self.assertIn("score", response.data)    
 
     def test_create_productReview_admin_403(self):
-        data = {
-            "comment": "Good product",
-            "score": 4.0,
-            "user": self.create_admin,
-            "product": self.product.data["id"]
-        }
 
         self.client.credentials(
             HTTP_AUTHORIZATION="Token " + self.token_admin)
-        response = self.client.post('/api/productReview/', data)
+        response = self.client.post('/api/productReview/', self.product_review_data)
 
         self.assertEqual(response.status_code, 403)
 
     def test_create_product_review_without_token_401(self):
-        data = {
-            "comment": "Good product",
-            "score": 4.0,
-            "user": self.create_seller,
-            "product": self.product.data["id"]
-        }
 
         self.client.credentials(HTTP_AUTHORIZATION="")
-        response = self.client.post('/api/productReview/', data)
+        response = self.client.post('/api/productReview/', self.product_review_data)
 
         self.assertEqual(response.status_code, 401)
 
     def test_create_product_review_incorret_fields_400(self):
-        data = {
+        product_review_data = {
             "comment": "Good product",
             "score": 4.0,
             "user": self.create_client
         }
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
-        response = self.client.post('/api/productReview/', data)
+        response = self.client.post('/api/productReview/', product_review_data)
 
         self.assertEqual(response.status_code, 400)
 
     def test_list_product_reviews_200(self):
-        product_review_data = {
-            "comment": "Good product",
-            "score": 4.0,
-            "product": self.product.data["id"]
-        }
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
-        response = self.client.post('/api/productReview/', product_review_data)
+        response = self.client.post('/api/productReview/', self.product_review_data)
 
         response= self.client.get("/api/productReview/", format="json")
         output = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(output), 1)
-        
+ 
     def test_return_product_review_by_id_200(self):
 
-        product_review_data = {
-            "comment": "Good product",
-            "score": 4.0,
-            "product": self.product.data["id"]
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
+        response = self.client.post('/api/productReview/', self.product_review_data, format='json').json()
+        id = response['id']
+        response= self.client.get(f'/api/productReview/{id}/',format="json")
+        output = response.json()
+        self.assertEqual(response.status_code, 200)
+        
+       
+    def test_patch_product_review_200(self):
+ 
+        patch_product_review_data = {
+            "comment": "Super good product",
+            "score": 1.0
         }
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
-        response = self.client.post('/api/productReview/', product_review_data)
-        print(response)
-        # id = response['id']
-        # response= self.client.get(f'/api/productReview/{id}/',format="json")
-        # output = response.json()
-        # self.assertEqual(response.status_code, 200)
-        # self.assertEqual(len(output), 1)
+        response = self.client.post('/api/productReview/', self.product_review_data, format='json').json()
+        id = response['id']
+        patch_review = self.client.patch(f'/api/productReview/{id}/', patch_product_review_data, format='json')
+        output = patch_review.json()
+        self.assertEqual(output["comment"], patch_product_review_data["comment"])
+        self.assertEqual(patch_review.status_code, 200)
        
 
-    
-    # def test_list_users_no_token(self):
-    #     response = self.client.get("/api/register/", format="json")
-    #     output = response.json()
 
-    #     self.assertEqual(response.status_code, 401)
-    #     self.assertEqual(output, {'detail': 'Authentication credentials were not provided.'})
-    
-    # def test_list_users_no_admin(self):
-    #     login_user_data= {
-    #         "email": "jose@bol.com",
-    #         "password": "12345678",
-    #     }
-
-    #     token = self.client.post("/api/login/",login_user_data, format="json").json()["token"]
-    #     self.client.credentials(HTTP_AUTHORIZATION="Token " + token)
-
-    #     response = self.client.get("/api/register/", format="json")
-    #     output = response.json()
-
-    #     self.assertEqual(response.status_code, 403)
-    #     self.assertEqual(output, {'detail': 'You do not have permission to perform this action.'})
-
+ 

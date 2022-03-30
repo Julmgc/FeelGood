@@ -32,13 +32,26 @@ class ProductReviewGetByIdAndPatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductReview
         fields = ['id', 'comment', 'score', 'user', 'product']
-
-    def update(self,instance,validated_data):
+        extra_kwargs = {
+            'product': {'read_only': True},
+        }
         
-        id =  self.context['view'].kwargs['productReviewId']
+    def update(self,instance,validated_data):
+       
+        
         user=self.context['request'].user
-        if user.uuid == id:
-            return super().update(instance,validated_data)
-        else:
-            raise ValidationError({'detail': 'No Permission.'})
+        product_review__id = self.context['view'].kwargs['productReviewId']
+        product_review = ProductReview.objects.get(id=product_review__id)
+
+        if product_review is not None:
+            product_review_user_id = product_review.user.uuid
+
+            if product_review_user_id == user.uuid:
+                return super().update(instance,validated_data)
+            else:
+             raise ValidationError({'detail': 'You do not have permission to perform this action.'})
+        
+
+        return super().update(instance,validated_data)
+    
    

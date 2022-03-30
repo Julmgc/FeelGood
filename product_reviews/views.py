@@ -3,11 +3,10 @@ from rest_framework.authentication import TokenAuthentication
 from users.permissions import ClientOrSellerProductReview
 from product_reviews.models import ProductReview
 from product_reviews.serializers import ProductReviewSerializer, ProductReviewGetByIdAndPatchSerializer
-from rest_framework.permissions import IsAuthenticated
 
 class ProductReviewListCreateView(ListCreateAPIView):
     authentications_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated,   ClientOrSellerProductReview]
+    permission_classes = [   ClientOrSellerProductReview]
 
     queryset = ProductReview.objects.all()
     serializer_class = ProductReviewSerializer
@@ -19,7 +18,7 @@ class ProductReviewListCreateView(ListCreateAPIView):
 
 class ProductReviewIdView(RetrieveUpdateAPIView):
     authentications_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated,   ClientOrSellerProductReview]
+    permission_classes = [   ClientOrSellerProductReview]
 
     queryset = ProductReview.objects.all()
     serializer_class = ProductReviewGetByIdAndPatchSerializer
