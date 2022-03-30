@@ -7,8 +7,8 @@ from . serializers import CategorySerializer
 from rest_framework.authentication import TokenAuthentication
 
 class CategoryViews(ListCreateAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [CanCreateCategory]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [CanCreateCategory]
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
