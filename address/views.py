@@ -13,6 +13,9 @@ class AddressView(APIView):
     permissions_classes = [IsAuthenticated]
 
     def put(self, request):
+        if request.user.is_anonymous:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
         serializer = CreateAddressSerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -27,6 +30,9 @@ class AddressView(APIView):
         return Response(CreateAddressSerializer(address[0]).data, status=status.HTTP_200_OK)
 
     def patch(self, request):
+        if request.user.is_anonymous:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+            
         serializer = UpdateAddressSerializer(data=request.data)
 
         if not serializer.is_valid():
