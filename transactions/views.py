@@ -45,7 +45,7 @@ class ListCreateTransaction(ListCreateAPIView):
             product["product"].save()
 
         # Número da nota deveria ser gerado externamente
-        Invoice.objects.create(transaction=transaction, number="999"+str(int.from_bytes(random.randbytes(17), "big")))
+        Invoice.objects.create(transaction=transaction, number="999"+str(int.from_bytes(random.randbytes(17), "big")), customer=request.user)
 
         serializer = TransactionSerializer(transaction).data
 
