@@ -86,7 +86,7 @@ class AddressViewTest(APITestCase):
             '/api/address/', self.address_data, format='json').json()["id"]
 
         response = self.client.patch(
-            f'/api/address/{id}/', self.address_data, format='json')
+            f'/api/address/', self.address_data, format='json')
         output = response.json()
 
         self.assertEqual(response.status_code, 200)
@@ -107,7 +107,7 @@ class AddressViewTest(APITestCase):
             HTTP_AUTHORIZATION="Token ")
 
         response = self.client.patch(
-            f'/api/address/{id}/', self.address_data, format='json')
+            f'/api/address/', self.address_data, format='json')
         output = response.json()
 
         self.assertEqual(response.status_code, 401)
