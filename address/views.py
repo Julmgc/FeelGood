@@ -26,16 +26,15 @@ class AddressView(APIView):
 
         return Response(CreateAddressSerializer(address[0]).data, status=status.HTTP_200_OK)
 
-    def patch(self, request, address_id=''):
+    def patch(self, request):
         serializer = UpdateAddressSerializer(data=request.data)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         address = Address.objects.filter(
-            id=address_id).update(**serializer.validated_data)
+            id=request.user.address.id).update(**serializer.validated_data)
         user = request.user
-        filtered_address = Address.objects.get(id=address_id)
+        filtered_address = Address.objects.get(id=request.user.address.id)
 
         user.address = filtered_address
 
