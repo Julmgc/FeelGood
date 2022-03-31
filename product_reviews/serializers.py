@@ -1,9 +1,10 @@
+from itertools import product
 from rest_framework import serializers
 from product_reviews.models import ProductReview
 from users.serializer import UserSerializer
 from products.models import Product
 from rest_framework.exceptions import ValidationError
-
+from orders.models import Order
 class ProductReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
  
@@ -22,7 +23,15 @@ class ProductReviewSerializer(serializers.ModelSerializer):
         review_product = self.context['view'].request.data.get('product', None)
         if review_product is not None:
             get_product = Product.objects.get(id=review_product)
-        
+            user_has_bougth_product = Order.objects.filter(customer=self.context['request'].user, product=get_product)
+            
+            if not user_has_bougth_product:
+                raise ValidationError({"detail":"You can only review a product you have bought."})
+            
+            user_already_made_a_review = ProductReview.objects.filter(product=get_product, user=self.context['request'].user)
+            if user_already_made_a_review:
+                raise ValidationError({"detail":"You already reviewed this product."})
+
             productReview = ProductReview.objects.create(**data_validated,user=self.context['request'].user, product=get_product)
             return productReview
         else:

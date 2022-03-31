@@ -8,7 +8,11 @@ class AdminGetPermission(BasePermission):
             if request.user.is_admin:
                 return True
             return False
-        return True
+        if request.method == "POST":
+            if not request.user.is_admin:
+                return True
+            
+        return False
 
 
 
