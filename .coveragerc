@@ -1,6 +1,7 @@
 [run]
 source = .
-omit = venv/*
-
+omit = 
+  venv/*
+  sinta_se_bem/*
 [report]
 show_missing = True
