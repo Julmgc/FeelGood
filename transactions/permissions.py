@@ -11,9 +11,5 @@ class AdminGetPermission(BasePermission):
         if request.method == "POST":
             if not request.user.is_admin:
                 return True
-            
+
         return False
-
-
-
-

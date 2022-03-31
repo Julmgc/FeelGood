@@ -21,6 +21,3 @@ class InvoiceGetOneView(RetrieveAPIView):
     queryset = Invoice.objects.all()
     serializer_class = InvoiceSerializer
     lookup_url_kwarg = 'invoice_id'
-
-
-

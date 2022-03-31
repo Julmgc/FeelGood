@@ -1,9 +1,11 @@
-from rest_framework.generics import ListAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.authentication import TokenAuthentication
-from .serializers import OrderGetSerializer
-from .models import Order
-from .permissions import AdminAndSellerUser
 from rest_framework.permissions import IsAuthenticated
+
+from .permissions import AdminAndSellerUser
+from .models import Order
+from .serializers import OrderGetSerializer
+
 
 class OrderGetView(ListAPIView):
     authentication_classes = [TokenAuthentication]
@@ -11,19 +13,20 @@ class OrderGetView(ListAPIView):
 
     queryset = Order.objects.all()
     serializer_class = OrderGetSerializer
-  
+
 
 class OrderGetOneView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated,AdminAndSellerUser]
+    permission_classes = [IsAuthenticated, AdminAndSellerUser]
 
     queryset = Order.objects.all()
     serializer_class = OrderGetSerializer
     lookup_url_kwarg = 'order_id'
 
+
 class OrderGetOneTransactionView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated,AdminAndSellerUser]
+    permission_classes = [IsAuthenticated, AdminAndSellerUser]
 
     queryset = Order.objects.all()
     serializer_class = OrderGetSerializer

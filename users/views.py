@@ -1,12 +1,13 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 from rest_framework.response import Response
-from users.models import User
-from users.serializer import UserSerializer, LoginSerializer, UpdateSerializer
-from users.permissions import AdminUser, AdminAndUser
 from rest_framework.authentication import TokenAuthentication, authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
+
+from users.models import User
+from users.serializer import UserSerializer, LoginSerializer, UpdateSerializer
+from users.permissions import AdminUser, AdminAndUser
 
 
 class UserView(ListCreateAPIView):
