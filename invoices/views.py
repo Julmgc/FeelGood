@@ -16,7 +16,7 @@ class InvoiceGetView(ListAPIView):
 
 class InvoiceGetOneView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, AdminAndUser]
+    permission_classes = [IsAuthenticated]
     filter_backends = [IsOwnerFilterBackend]
 
 
