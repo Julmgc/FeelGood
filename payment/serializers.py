@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 from payment.models import Payment
 from users.serializer import UserSerializer
 from transactions.exceptions import TransactionError
-from django.utils.timezone import now
+
 
 class PaymentSerializer(serializers.ModelSerializer):
 
@@ -28,8 +28,10 @@ class PaymentSerializer(serializers.ModelSerializer):
 
         return super().validate(attrs)
 
+
 class PaymentTransactionSerializer(serializers.Serializer):
     id = serializers.UUIDField()
+
     def validate(self, attrs):
         try:
             payment = Payment.objects.get(id=attrs["id"])

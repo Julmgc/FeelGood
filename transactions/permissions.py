@@ -9,7 +9,3 @@ class AdminGetPermission(BasePermission):
                 return True
             return False
         return True
-
-
-
-

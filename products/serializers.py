@@ -91,13 +91,10 @@ class ProductsTransactionsSerializer(serializers.Serializer):
     def validate(self, attrs):
         try:
             product = Product.objects.get(id=attrs["id"])
-
-
         except Product.DoesNotExist:
             raise TransactionError({"detail": "Product not found"}, code=404)
 
         if product.quantity < attrs["quantity"]:
             raise TransactionError({"detail": f'Product {product.name} quantity is not enough'}, code=400)
-        
 
         return super().validate(attrs)

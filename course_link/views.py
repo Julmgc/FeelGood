@@ -1,13 +1,14 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
-from .serializer import CourseLinkSerializer
-from .models import CourseLink
 from rest_framework.authentication import TokenAuthentication
-from .permissions import AdminPermission
 from rest_framework.views import APIView
-from products.models import Product
 from rest_framework import status
 from rest_framework.response import Response
+
+from products.models import Product
+from .permissions import AdminPermission
+from .models import CourseLink
 from products.serializers import ProductSerializer
+from .serializer import CourseLinkSerializer
 
 
 class CourseLinkCreateAndList(ListCreateAPIView):
@@ -33,7 +34,6 @@ class CourseAndProdut(APIView):
             course = CourseLink.objects.get(id=courseId)
             product_id = request.data['product_id']
             product = Product.objects.get(id=product_id)
-
 
             return Response(ProductSerializer(product).data, status=status.HTTP_200_OK)
         except (CourseLink.DoesNotExist, Product.DoesNotExist):
