@@ -13,7 +13,6 @@ class CanCreateCategory(BasePermission):
 
 class CanGetCategory(BasePermission):
     def has_permission(self, request, view):
-        if request.user.is_anonymous == True: return False
         
         if request.method == 'GET':
             return True

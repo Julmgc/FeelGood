@@ -27,6 +27,10 @@ class ProductReviewSerializer(serializers.ModelSerializer):
             
             if not user_has_bougth_product:
                 raise ValidationError({"detail":"You can only review a product you have bought."})
+            
+            user_already_made_a_review = ProductReview.objects.filter(product=get_product, user=self.context['request'].user)
+            if user_already_made_a_review:
+                raise ValidationError({"detail":"You already reviewed this product."})
 
             productReview = ProductReview.objects.create(**data_validated,user=self.context['request'].user, product=get_product)
             return productReview

@@ -90,16 +90,16 @@ class OrderViews(APITestCase):
         self.assertIn("id", response.data)
         self.assertIn("amount", response.data)
     
-    # def test_create_transaction_no_permission_403(self):
-    #     data_transaction ={
-    #         "payment": {"id":self.id_payment },
-	#         "products": [{"id":self.id_products , "quantity": 10}]
-    #     }
-    #     self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
-    #     response = self.client.post('/api/transaction/', data_transaction,format="json")
-    #     output = response.json()
-    #     self.assertEqual(response.status_code, 403)
-    #     self.assertEqual(output, {'detail': 'You do not have permission to perform this action.'})
+    def test_create_transaction_no_permission_403(self):
+        data_transaction ={
+            "payment": {"id":self.id_payment },
+	        "products": [{"id":self.id_products , "quantity": 10}]
+        }
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_admin)
+        response = self.client.post('/api/transaction/', data_transaction,format="json")
+        output = response.json()
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(output, {'detail': 'You do not have permission to perform this action.'})
       
        
 

@@ -8,14 +8,15 @@ class productReviewViewTest(APITestCase):
 
     def setUp(self):
         self.create_admin = User.objects.create_user(
-            email='seller@email.com',
+             email='admin@email.com',
+           
             password='12345678',
             first_name="Teste",
             last_name="Resto",
             cpf="12345678901",
             birthdate="2000-01-01",
-            is_seller=True,
-            is_admin=False,
+            is_seller=False,
+            is_admin=True,
         )
         self.create_client = User.objects.create_user(
             email='client@email.com',
@@ -27,12 +28,12 @@ class productReviewViewTest(APITestCase):
         )
 
         self.create_seller = User.objects.create_user(
-            email='admin@email.com',
+             email='seller@email.com',
             password='12345678',
             first_name="Teste",
             last_name="Resto",
-            is_seller=False,
-            is_admin=True,
+            is_seller=True,
+            is_admin=False,
         )
 
         self.token_admin = self.client.post(
@@ -95,20 +96,20 @@ class productReviewViewTest(APITestCase):
         response_payment_creation = self.client.post('/api/payment/', self.payment_data)
         response_payment_creation_id = response_payment_creation.data["id"]
 
-#         payment_id = response_payment_creation.data['id']
-#   id = self.client.post(
-#             '/api/products/', self.product_data, format="json").json()["id"]
+
         transaction_data = {
             "payment": {"id": response_payment_creation_id},
             "products": [{"id": self.product.data["id"], "quantity": 10}]
         }
 
         # CREATE TRANSACTION
-        response_payment_creation = self.client.post('/api/transaction/', transaction_data)
+        response_payment_creation = self.client.post('/api/transaction/', transaction_data, format="json")
+
+
 
     def test_create_product_review_201(self):
 
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.seller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
         response = self.client.post('/api/productReview/', self.product_review_data)
         self.assertEqual(response.status_code, 201)
         self.assertIn("id", response.data)
@@ -117,12 +118,12 @@ class productReviewViewTest(APITestCase):
 
     def test_create_product_review_product_not_bought400(self):
 
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.seller)
-        response = self.client.post('/api/productReview/', self.self.product2_review_data)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_client)
+        response = self.client.post('/api/productReview/', self.product2_review_data)
+        output = response.json()
         self.assertEqual(response.status_code, 400)
-        self.assertIn("id", response.data)
-        self.assertIn("comment", response.data)
-        self.assertIn("score", response.data)    
+        self.assertEqual(output, {'detail': 'You can only review a product you have bought.'})
+ 
 
     def test_create_productReview_admin_403(self):
 
@@ -151,7 +152,7 @@ class productReviewViewTest(APITestCase):
         output = response.json()
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(output, {'detail': "You can only review a product you have bought."})
+        self.assertEqual(output, {'product, score, comment': 'This fields are required.'})
 
 
     def test_list_product_reviews_200(self):
