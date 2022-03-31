@@ -29,11 +29,15 @@ class CourseLinkUpdateAndListOne(RetrieveUpdateAPIView):
 
 
 class CourseAndProdut(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [AdminPermission]
     def post(self, request, courseId=''):
         try:
             course = CourseLink.objects.get(id=courseId)
             product_id = request.data['product_id']
             product = Product.objects.get(id=product_id)
+            product.course_links.add(course)
+            product.save()
 
             return Response(ProductSerializer(product).data, status=status.HTTP_200_OK)
         except (CourseLink.DoesNotExist, Product.DoesNotExist):

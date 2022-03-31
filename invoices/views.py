@@ -4,7 +4,7 @@ from .serializers import InvoiceSerializer
 from .models import Invoice
 from users.permissions import AdminUser, AdminAndUser
 from rest_framework.permissions import IsAuthenticated
-
+from .filters import IsOwnerFilterBackend
 
 class InvoiceGetView(ListAPIView):
     authentication_classes = [TokenAuthentication]
@@ -17,6 +17,8 @@ class InvoiceGetView(ListAPIView):
 class InvoiceGetOneView(RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, AdminAndUser]
+    filter_backends = [IsOwnerFilterBackend]
+
 
     queryset = Invoice.objects.all()
     serializer_class = InvoiceSerializer
