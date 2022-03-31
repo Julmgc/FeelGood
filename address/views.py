@@ -37,8 +37,13 @@ class AddressView(APIView):
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        if request.user.address == None:
+            return Response({"detail": "Address not found."}, status=status.HTTP_404_NOT_FOUND)
         address = Address.objects.filter(
             id=request.user.address.id).update(**serializer.validated_data)
+        
+
         user = request.user
         filtered_address = Address.objects.get(id=request.user.address.id)
 
