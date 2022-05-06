@@ -5,7 +5,8 @@ from course_link.models import CourseLink
 from products.models import Product
 from category.serializers import CategorySerializer
 from course_link.serializers import CourseLinkSerializer
-
+from sales.models import Sale
+from rest_framework.exceptions import ValidationError
 
 class ProductSerializer(serializers.ModelSerializer):
 
@@ -49,6 +50,16 @@ class ProductSerializer(serializers.ModelSerializer):
         return new_product
 
     def update(self, instance, validated_data):
+        sale = self.context['view'].request.data.get(
+            'sale', None)
+        if sale is not None:
+            founded_sale = Sale.objects.get(id=sale)
+            if not founded_sale:
+                raise ValidationError(
+                {"detail": "Sale was not found"})
+            instance.sale.add(founded_sale)
+
+
         new_course_links = self.context['view'].request.data.get(
             'course_links', [])
         new_categories = self.context['view'].request.data.get(

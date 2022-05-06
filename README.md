@@ -1,4 +1,4 @@
-# <font color="green">**Sinta-se Bem API**</font>
+# <font color="green">**Feel Good API**</font>
 
 This API is an perfume, beauty, skin and body care online platform, where clients and sellers can not only buy their products, but also to learn about each one with online courses that are linked to the product, an amazing selling programed system where the admin can show their sale prices and opportunities increasing the company profits.
 
