@@ -1,20 +1,20 @@
-# <font color="green">**Sinta-se Bem API**</font>
+# <font color="green">**Feel Good API**</font>
 
-This API is an perfume, beauty, skin and body care online platform, where clients and sellers can not only buy their products, but also to learn about each one with online courses that are linked to the product, an amazing selling programed system where the admin can show their sale prices and opportunities increasing the company profits.
+This API is a perfume, beauty, skin and body care online platform, where clients and sellers can not only buy their products, but also learn about each one with online courses that are linked to the product, an amazing selling programed system where the admin can show their sale prices and opportunities, increasing the company profits.
 
 ## <font color="blue">**How to get started (global):**</font>
 
-This api has been deployed to heroku, so here is the link to access the api.
+This api has been deployed on heroku, here is the link to access the api.
 
 ```
 https://sinta-se-bem.herokuapp.com/
 ```
 
-Now you have to use a api client program, as insomnia, for example, so you can access and test the api.
+Now you have to use an api client program, as insomnia, for example, so you can access and test the api.
 
 ## <font color="blue">**How to get started (locally):**</font>
 
-To run this service in your local you need to do some steps, starting with cloning this project from gitlab. Click on this link:
+To run this service you need to follow some steps, starting with cloning this project from gitlab. Click on this link:
 
 ```
 https://gitlab.com/julmgc09/sinta-se-bem
